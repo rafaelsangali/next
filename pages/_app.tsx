@@ -1,9 +1,17 @@
 import { GetServerSideProps } from "next";
 
-export default function Home({repositories }:any) {
+interface IItemRepository {
+  name: string;
+}
+
+interface IRepository {
+  repositories: string[];
+}
+
+export default function Home({ repositories }: IRepository) {
   return (
     <ul>
-      {repositories((repo:any) => (
+      {repositories.map((repo: string) => (
         <li key={repo}>{repo}</li>
       ))}
     </ul>
@@ -15,8 +23,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     "https://api.github.com/users/rafaelsangali/repos"
   );
   const data = await response.json();
-  const repositoryNames = data.map((item:any) => item.name);
-  
+  const repositoryNames = data.map((item: IItemRepository) => item.name);
 
   return {
     props: {
